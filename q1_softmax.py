@@ -20,7 +20,7 @@ def softmax(x):
     written assignment!
     """
 
-    ### YOUR CODE HERE
+    ### YOUR CODE HER
     if x.ndim == 1:
         x -= np.min(x)  # solving overflow problem
         x = np.exp(x)
