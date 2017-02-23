@@ -20,11 +20,16 @@ def softmax(x):
     written assignment!
     """
     """
+    why x-max(x) ?
     When computing softmax, the intermediate values may become very large.
     Dividing two large numbers can be numerically unstable.
     http://stackoverflow.com/questions/34968722/softmax-function-python
     """
 
+    """
+    why keepdims?
+    http://stackoverflow.com/questions/40927156/what-the-role-of-keepdims-in-python
+    """
     ### YOUR CODE HER
     assert len(x.shape) <= 2
     y = np.exp(x - np.max(x, axis=len(x.shape) - 1, keepdims=True))
