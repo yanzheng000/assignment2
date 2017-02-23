@@ -19,19 +19,20 @@ def softmax(x):
     You must implement the optimization in problem 1(a) of the 
     written assignment!
     """
+    """
+    When computing softmax, the intermediate values may become very large.
+    Dividing two large numbers can be numerically unstable.
+    http://stackoverflow.com/questions/34968722/softmax-function-python
+    """
 
     ### YOUR CODE HER
-    if x.ndim == 1:
-        x -= np.min(x)  # solving overflow problem
-        x = np.exp(x)
-        x /= np.sum(x)
-    else:
-        x -= np.min(x, axis=1, keepdims=True)  # solving overflow problem
-        x = np.exp(x)
-        x /= np.sum(x, axis=1, keepdims=True)
+    assert len(x.shape) <= 2
+    y = np.exp(x - np.max(x, axis=len(x.shape) - 1, keepdims=True))
+    normalization = np.sum(y, axis=len(x.shape) - 1, keepdims=True)
+    return np.divide(y, normalization)
     ### END YOUR CODE
     
-    return x
+    
 
 def test_softmax_basic():
     """
