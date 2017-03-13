@@ -26,24 +26,25 @@ def forward_backward_prop(data, labels, params, dimensions):
     b2 = np.reshape(params[ofs:ofs + Dy], (1, Dy))
 
     ### YOUR CODE HERE: forward propagation
-    h_per_item = sigmoid(np.dot(data, W1) + b1)
-    yhat_per_item = softmax(np.dot(h_per_item, W2) + b2)
-    cost = -np.sum(labels * np.log(yhat_per_item))
+    z2 = np.dot(data, W1) + b1
+    a2 = sigmoid(z2)
+    z3 = softmax(np.dot(a2, W2) + b2)
+    cost = -np.sum(labels * np.log(z3))
     ### END YOUR CODE
 
     ### YOUR CODE HERE: backward propagation
-    grad_softmax_per_item = yhat_per_item - labels
-    grad_b2 = np.sum(grad_softmax_per_item, axis=0, keepdims=True)
-    grad_W2 = np.dot(h_per_item.T, grad_softmax_per_item)
-    grad_sigmoid_per_item = sigmoid_grad(h_per_item)
-    grad_b1_per_item = np.dot(grad_softmax_per_item, W2.T) * grad_sigmoid_per_item
-    grad_b1 = np.sum(grad_b1_per_item, axis=0, keepdims=True)
-    grad_W1 = np.dot(data.T, grad_b1_per_item)
+    subtraction = (z3 - labels) 
+    gradb2 = np.sum(subtraction, axis=0, keepdims=True)
+    gradW2 = np.dot(a2.T, subtraction)
+    sigmoid_grad_a2 = sigmoid_grad(a2)
+    grad_a1 = np.dot(subtraction, W2.T) * sigmoid_grad_a2
+    gradb1 = np.sum(grad_a1, axis=0, keepdims=True)
+    gradW1 = np.dot(data.T, grad_a1)
     ### END YOUR CODE
     
     ### Stack gradients (do not modify)
-    grad = np.concatenate((grad_W1.flatten(), grad_b1.flatten(), 
-        grad_W2.flatten(), grad_b2.flatten()))
+    grad = np.concatenate((gradW1.flatten(), gradb1.flatten(), 
+        gradW2.flatten(), gradb2.flatten()))
     
     return cost, grad
 

@@ -8,9 +8,9 @@ from q4_softmaxreg import softmaxRegression, getSentenceFeature, accuracy, softm
 
 # Try different regularizations and pick the best!
 # NOTE: fill in one more "your code here" below before running!
-REGULARIZATION = None   # Assign a list of floats in the block below
+REGULARIZATION = sorted([1e-1, 3e-1, 1e-2, 3e-2, 1e-3, 3e-3, 1e-4, 3e-4, 1e-5, 3e-5, 0.])   # Assign a list of floats in the block below
 ### YOUR CODE HERE
-raise NotImplementedError
+
 ### END YOUR CODE
 
 # Load the dataset
@@ -82,11 +82,11 @@ for result in results:
 print ""
 
 # Pick the best regularization parameters
-BEST_REGULARIZATION = None
-BEST_WEIGHTS = None
 
 ### YOUR CODE HERE 
-raise NotImplementedError
+best_setup_dict = max(results, key=lambda setup_dict: setup_dict["dev"])
+BEST_REGULARIZATION = best_setup_dict["reg"]
+BEST_WEIGHTS = best_setup_dict["weights"]
 ### END YOUR CODE
 
 # Test your findings on the test set
@@ -112,3 +112,11 @@ plt.legend(['train', 'dev'], loc='upper left')
 plt.savefig("q4_reg_v_acc.png")
 plt.show()
 
+"""=== Recap ===
+Reg     Train       Dev
+9.765625E-04    18.995787   20.435967
+4.882812E-04    25.983146   26.339691
+2.441406E-04    27.258895   25.522252
+1.220703E-04    18.984082   20.254314
+6.103516E-05    25.971442   26.339691
+3.051758E-05    27.223783   25.522252"""
